@@ -113,3 +113,62 @@ window.addEventListener('keydown', (e) => {
 
     }
 })
+
+
+// for touch devices
+let startX, startY;
+
+window.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+});
+
+window.addEventListener('touchmove', (e) => {
+    e.preventDefault(); // Prevent scrolling on touch devices
+
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+
+    const deltaX = currentX - startX;
+    const deltaY = currentY - startY;
+
+    // Adjust the sensitivity based on your needs
+    const sensitivity = 10;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        // Horizontal swipe
+        if (deltaX > sensitivity) {
+            // Swipe right
+            if (inputDir.x !== -1) {
+                inputDir = { x: 1, y: 0 }
+            }
+            console.log("Swipe Right");
+        } else if (deltaX < -sensitivity) {
+            // Swipe left
+            if (inputDir.x !== 1) {
+                inputDir = { x: -1, y: 0 }
+            }
+            console.log("Swipe Left");
+        }
+    } else {
+        // Vertical swipe
+        if (deltaY > sensitivity) {
+            // Swipe down
+            if (inputDir.y !== -1) {
+                inputDir = { x: 0, y: 1 }
+            }
+            console.log("Swipe Down");
+        } else if (deltaY < -sensitivity) {
+            // Swipe up
+            if (inputDir.y !== 1) {
+                console.log("bfrbrk")
+                inputDir = { x: 0, y: -1 }
+            }
+            console.log("Swipe Up");
+        }
+    }
+
+    // Update the start coordinates for the next iteration
+    startX = currentX;
+    startY = currentY;
+});
